@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Guess the word</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <script src="react/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  
+    <script type="text/javascript">
+
+      var lang="en";
+      var other_lang="lv";
+      var lang_arr=["en","lv"];
+      var correct_answer_count=0;
+      var word_data=[];
+
+      function load_word(){
+        $("#content").text("");    
+        var random_word_id=Math.floor(Math.random() * word_data.length);
+
+        $("#word_to_know").text(word_data[random_word_id][other_lang]);    
+
+        var i=0;
+        var correct_answer=Math.floor(Math.random() * 4);
+        for (i=0;i<4;i++){
+
+          //TODO: not checking if that answer exists
+          var random_id=Math.floor(Math.random() * word_data.length);
+
+          //putting correct answer somewhere
+          if (correct_answer==i){
+            random_id=random_word_id;
+          }
+
+
+          var button_data=$('<input/>').attr({
+              type: "button",
+              id: "button_data_"+i,
+              class:"btn btn-primary word_choice",
+              index_value:i,
+              value: word_data[random_id][lang]
+          });
+          $("#content").append(button_data);    
+        }
+
+        $( ".word_choice" ).click(function() {
+          var current_index=$(this).attr('index_value');
+          if (current_index==correct_answer){
+            $( this ).attr("class","btn btn-success");
+            correct_answer_count++;
+          } else {
+            $( this ).attr("class","btn btn-danger");
+          }
+        });
+
+      }
+
+
+      jQuery(function($){
+
+        //var word_data=[{"en":"about","lv":"par"},{"en":"after","lv":"pēc"},{"en":"again","lv":"atkal"},{"en":"air","lv":"gaiss"},{"en":"all","lv":"visi"},{"en":"along","lv":"kopā"}];
+
+        $.getJSON( "data.json", function( data ) {
+          var items = [];
+          word_data=data;
+          load_word();
+
+        });
+
+        $("input:radio[name=lang]").click(function() {
+            lang = $(this).val();
+
+            //FIXME: bad code, need something more elegant
+            if (lang=="en"){
+              other_lang="lv";
+            } else {
+              other_lang="en";
+            }
+            load_word();
+        });
+        $("#next_word").click(function() {
+          load_word();
+        });
+
+
+      });
+  
+
+    </script>
+
+  </head>
+  <body>
+
+  <div class="well">  
+    <div>  
+    <label for="theme-grey">
+    <input type="radio" id="guess-lv" name="lang" value="lv" />Latviski</label>
+    <label for="theme-pink">
+    <input type="radio" id="guess-en" name="lang" value="en" checked />English</label>
+    </div>  
+
+    <h1 id="word_to_know"> Piemērs </h1>  
+    <div id="content"></div>
+    <div id="footer">
+      <br>
+        <button type="button" id="next_word" class="btn btn-info">Next</button>
+    </div>
+
+  </div>
+  
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
