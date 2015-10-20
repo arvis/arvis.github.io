@@ -48,8 +48,9 @@
           var button_data=$('<input/>').attr({
               type: "button",
               id: "button_data_"+i,
-              class:"btn btn-primary word_choice",
+              class:"btn btn-info btn-lg btn-block word_choice",
               index_value:i,
+              style:"width:100%; margin-bottom:15; margin-top:15;",
               value: word_data[random_id][lang]
           });
           $("#content").append(button_data);    
@@ -69,8 +70,6 @@
 
 
       jQuery(function($){
-
-        //var word_data=[{"en":"about","lv":"par"},{"en":"after","lv":"pēc"},{"en":"again","lv":"atkal"},{"en":"air","lv":"gaiss"},{"en":"all","lv":"visi"},{"en":"along","lv":"kopā"}];
 
         $.getJSON( "data.json", function( data ) {
           var items = [];
@@ -103,19 +102,32 @@
   </head>
   <body>
 
-  <div class="well">  
-    <div>  
-    <label for="theme-grey">
-    <input type="radio" id="guess-lv" name="lang" value="lv" />Latviski</label>
-    <label for="theme-pink">
-    <input type="radio" id="guess-en" name="lang" value="en" checked />English</label>
+  <div class="container">  
+    <div class="row">  
+      <label for="theme-grey">
+      <input type="radio" id="guess-lv" name="lang" value="lv" />Latviski</label>
+      <label for="theme-pink">
+      <input type="radio" id="guess-en" name="lang" value="en" checked />English</label>
     </div>  
 
-    <h1 id="word_to_know"> Piemērs </h1>  
-    <div id="content"></div>
-    <div id="footer">
-      <br>
-        <button type="button" id="next_word" class="btn btn-info">Next</button>
+    <div class="row">
+      <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
+        <h1 id="word_to_know"> Piemērs </h1> 
+        <br>
+      </div>
+    </div> 
+
+    <div class="row">
+
+      <div id="content" class="col-sm-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
+      </div>
+    </div>
+
+    <div class="row">
+      <div id="footer" class="col-sm-12 col-md-10 col-lg-9" >
+          <br>
+          <button type="button" id="next_word" style:"spacing:5px; margin-top:15px" class="btn btn-primary pull-right">Next</button>
+      </div>
     </div>
 
   </div>
