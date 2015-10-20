@@ -59,10 +59,10 @@
         $( ".word_choice" ).click(function() {
           var current_index=$(this).attr('index_value');
           if (current_index==correct_answer){
-            $( this ).attr("class","btn btn-success");
+            $( this ).attr("class","btn btn-lg btn-block btn-success");
             correct_answer_count++;
           } else {
-            $( this ).attr("class","btn btn-danger");
+            $( this ).attr("class","btn btn-lg btn-block btn-danger");
           }
         });
 
