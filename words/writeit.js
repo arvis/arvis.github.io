@@ -8,6 +8,7 @@
       function load_word(){
         $("#content").text("");    
         $("#is_correct").text("No answer yet");
+        $("#answer_info").attr("class","bg-warning col-sm-6 col-lg-4");
 
         random_word_id=Math.floor(Math.random() * word_data.length);
 
@@ -20,8 +21,10 @@
         console.log(users_answer+"-"+word_data[random_word_id][lang]);
         if (users_answer===word_data[random_word_id][lang]){
           $("#is_correct").text("Correct!");
+          $("#answer_info").attr("class","bg-success col-sm-6 col-lg-4");
         } else {
           $("#is_correct").text("Not correct! - "+word_data[random_word_id][lang]);
+          $("#answer_info").attr("class","bg-danger col-sm-6 col-lg-4");
         }
         $("#answer").val("");
 
