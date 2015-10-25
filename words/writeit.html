@@ -17,7 +17,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="words.js"></script>
+    <script src="writeit.js"></script>
   
 
   </head>
@@ -25,23 +25,33 @@
 
   <div class="container">  
     <div class="row">  
-      <label for="theme-grey">
+      <label for="guess-lv">
       <input type="radio" id="guess-lv" name="lang" value="lv" />Latviski</label>
-      <label for="theme-pink">
+      <label for="guess-en">
       <input type="radio" id="guess-en" name="lang" value="en" checked />English</label>
-      <a href="writeit.html" class="btn btn-primary pull-right"> Uzrakstīt </a>
+
+      <a href src="index.html" class="btn btn-primary pull-right"> Vārdi </a>
     </div>  
 
+
     <div class="row">
-      <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
-        <h1 id="word_to_know"> Piemērs </h1> 
-        <br>
+    	<br>
+
+      <div class="col-sm-6 ">
+      	<h1 id="word_to_know">Piemērs</h1>
       </div>
-    </div> 
+      <div id="" class="col-sm-6 ">
+	      <textarea id="answer" class="form-control custom-control" rows="3"> </textarea> 
+      </div>
+    </div>
 
     <div class="row">
 
-      <div id="content" class="col-sm-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
+      <div class="col-sm-6 ">
+      	<h3 id="is_correct">No answer yet</h3>
+      </div>
+      <div class="col-sm-6 ">
+          <button type="button" id="submit_answer" style:"spacing:5px; margin-top:15px" class="btn btn-primary pull-right">Check answer</button>
       </div>
     </div>
 
