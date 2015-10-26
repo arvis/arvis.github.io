@@ -17,10 +17,10 @@
       }
 
       function check_answer(){
-        var users_answer=$("#answer").val();
+        var users_answer=$("#answer").val().toLowerCase();
         console.log(users_answer+"-"+word_data[random_word_id][lang]);
-        if (users_answer===word_data[random_word_id][lang]){
-          $("#is_correct").text("Correct!");
+        if (users_answer===word_data[random_word_id][lang] ) {
+          $("#is_correct").text("Correct! ")+word_data[random_word_id][lang];
           $("#answer_info").attr("class","bg-success col-sm-6 col-lg-4");
         } else {
           $("#is_correct").text("Not correct! - "+word_data[random_word_id][lang]);
