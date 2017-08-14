@@ -5,7 +5,7 @@ var sword;
 var giggle;
 var coin1;
 var coin3;
-var clickme;
+// var clickme;
 var monsterTween;
 
 game.state.add('play', {
@@ -25,7 +25,7 @@ game.state.add('play', {
         this.game.load.image('dagger', 'assets/496_RPG_icons/W_Dagger002.png');
         this.game.load.image('swordIcon1', 'assets/496_RPG_icons/S_Sword15.png');
 
-        this.game.load.image('clickme', 'assets/clickme.png');
+        // this.game.load.image('clickme', 'assets/clickme.png');
 
 
         // game.load.audio('sword', 'assets/sounds/sword.mp3');
@@ -117,7 +117,7 @@ game.state.add('play', {
         coin1 = game.add.audio('coin1');
         coin3 = game.add.audio('coin3');
 
-        clickme = game.add.sprite(this.game.world.centerX+30,this.game.world.centerY-120,'clickme');
+        // clickme = game.add.sprite(this.game.world.centerX+30,this.game.world.centerY-120,'clickme');
         // game.sound.setDecodedCallback([sword], this.start, this);
 
         var monster;
@@ -148,10 +148,10 @@ game.state.add('play', {
         this.currentMonster.position.set(this.game.world.centerX + 100, this.game.world.centerY +200);
 
         // add click me sign
-        monsterTween = game.add.tween(clickme).to({ alpha: 0 }, 1000, 
-            Phaser.Easing.Linear.Out, true, 0);
-        monsterTween.repeat(Infinity);
-        monsterTween.start();
+        // monsterTween = game.add.tween(clickme).to({ alpha: 0 }, 1000, 
+        //     Phaser.Easing.Linear.Out, true, 0);
+        // monsterTween.repeat(Infinity);
+        // monsterTween.start();
 
         this.monsterInfoUI = this.game.add.group();
         this.monsterInfoUI.position.setTo(this.currentMonster.x - 220, this.currentMonster.y + 0);
