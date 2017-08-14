@@ -311,13 +311,13 @@ game.state.add('play', {
     onInputUp:function(monster,pointer){
        this.currentMonster.rotation = 0; 
        this.currentMonster.scale.setTo(1,1);
-       monsterTween.resume();
+       // monsterTween.resume();
 
     },
     onClickMonster: function(monster, pointer) {
         // apply click damage to monster
         this.currentMonster.damage(this.player.clickDmg);
-       monsterTween.pause();
+       // monsterTween.pause();
 
         // fake animation
         this.currentMonster.rotation = -.10; // or .angle = 45;
