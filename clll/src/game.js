@@ -5,13 +5,16 @@ var sword;
 var giggle;
 var coin1;
 var coin3;
-// var clickme;
+var clickme;
 var monsterTween;
 
 game.state.add('play', {
     preload: function() {
-        this.game.load.image('forest-front', 'assets/beach-background.jpeg');
+        // this.game.load.image('forest-front', 'assets/beach-background.jpeg');
+        this.game.load.image('forest-front', 'assets/opponents/field.jpg');
 
+
+/*
         this.game.load.image('girl_1', 'assets/opponents/girls_1.png');
         this.game.load.image('girl_2', 'assets/opponents/girls_2.png');
         this.game.load.image('girl_3', 'assets/opponents/girls_3.png');
@@ -19,18 +22,30 @@ game.state.add('play', {
         this.game.load.image('men_1', 'assets/opponents/men_1.png');
         this.game.load.image('men_2', 'assets/opponents/men_2.png');
         this.game.load.image('men_3', 'assets/opponents/men_3.png');
+*/
+
+        this.game.load.image('girl_1', 'assets/opponents/football1.png');
+        this.game.load.image('girl_2', 'assets/opponents/football2.png');
+        this.game.load.image('girl_3', 'assets/opponents/football3.png');
+        this.game.load.image('girl_4', 'assets/opponents/football4.png');
+        this.game.load.image('men_1', 'assets/opponents/football5.png');
+        this.game.load.image('men_2', 'assets/opponents/football6.png');
+        this.game.load.image('men_3', 'assets/opponents/football6.png');
 
 
         this.game.load.image('gold_coin', 'assets/496_RPG_icons/I_GoldCoin.png');
         this.game.load.image('dagger', 'assets/496_RPG_icons/W_Dagger002.png');
         this.game.load.image('swordIcon1', 'assets/496_RPG_icons/S_Sword15.png');
 
-        // this.game.load.image('clickme', 'assets/clickme.png');
+        this.game.load.image('clickme', 'assets/clickme.png');
 
 
         // game.load.audio('sword', 'assets/sounds/sword.mp3');
-        game.load.audio('sword', 'assets/sounds/wine_short.wav');
-        game.load.audio('giggle', 'assets/sounds/giggle_short.wav');
+        // game.load.audio('sword', 'assets/sounds/wine_short.wav');
+        game.load.audio('sword', 'assets/sounds/ball.wav');
+        
+        // game.load.audio('giggle', 'assets/sounds/giggle_short.wav');
+        game.load.audio('giggle', 'assets/sounds/goal.wav');
         game.load.audio('coin1', 'assets/sounds/coin1.wav');
         game.load.audio('coin3', 'assets/sounds/coin3.wav');
 
@@ -103,10 +118,10 @@ game.state.add('play', {
         });
 
         var monsterData = [
-            { name: 'Dasha', image: 'girl_1', maxHealth: 10 },
-            { name: 'Svetlana', image: 'girl_2', maxHealth: 20 },
-            { name: 'Oksana', image: 'girl_3', maxHealth: 30 },
-            { name: 'Ludmila', image: 'girl_4', maxHealth: 5 },
+            { name: 'Ronaldu', image: 'girl_1', maxHealth: 10 },
+            { name: 'John', image: 'girl_2', maxHealth: 20 },
+            { name: 'Juhan', image: 'girl_3', maxHealth: 30 },
+            { name: 'Mesi', image: 'girl_4', maxHealth: 5 },
             { name: 'Oleg', image: 'men_1', maxHealth: 10 },
             { name: 'Yurii', image: 'men_2', maxHealth: 10 },
             { name: 'Igor', image: 'men_3', maxHealth: 15 }
@@ -148,11 +163,12 @@ game.state.add('play', {
         this.currentMonster.position.set(this.game.world.centerX + 100, this.game.world.centerY +200);
 
         // add click me sign
-        // monsterTween = game.add.tween(clickme).to({ alpha: 0 }, 1000, 
-        //     Phaser.Easing.Linear.Out, true, 0);
-        // monsterTween.repeat(Infinity);
-        // monsterTween.start();
-
+/*        
+        monsterTween = game.add.tween(clickme).to({ alpha: 0 }, 1000, 
+            Phaser.Easing.Linear.Out, true, 0);
+        monsterTween.repeat(Infinity);
+        monsterTween.start();
+*/
         this.monsterInfoUI = this.game.add.group();
         this.monsterInfoUI.position.setTo(this.currentMonster.x - 220, this.currentMonster.y + 0);
         this.monsterNameText = this.monsterInfoUI.addChild(this.game.add.text(0, 0, this.currentMonster.details.name, {
@@ -311,13 +327,13 @@ game.state.add('play', {
     onInputUp:function(monster,pointer){
        this.currentMonster.rotation = 0; 
        this.currentMonster.scale.setTo(1,1);
-       // monsterTween.resume();
+       monsterTween.resume();
 
     },
     onClickMonster: function(monster, pointer) {
         // apply click damage to monster
         this.currentMonster.damage(this.player.clickDmg);
-       // monsterTween.pause();
+//       monsterTween.pause();
 
         // fake animation
         this.currentMonster.rotation = -.10; // or .angle = 45;
