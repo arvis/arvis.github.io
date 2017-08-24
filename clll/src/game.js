@@ -10,28 +10,67 @@ var monsterTween;
 
 game.state.add('play', {
     preload: function() {
+
+        var back_beach='assets/beach-background.jpeg';
+        var back_football='assets/opponents/field.jpg';
+        var background='assets/beach-background.jpeg';
+
+        var images_beach=[
+            'assets/opponents/girls_1.png',
+            'assets/opponents/girls_2.png',
+            'assets/opponents/girls_3.png',
+            'assets/opponents/girls_4.png',
+            'assets/opponents/men_1.png',
+            'assets/opponents/men_2.png',
+            'assets/opponents/men_3.png',
+        ];
+
+        var images_football=[
+            'assets/opponents/football1.png',
+            'assets/opponents/football2.png',
+            'assets/opponents/football3.png',
+            'assets/opponents/football4.png',
+            'assets/opponents/football5.png',
+            'assets/opponents/football6.png',
+            'assets/opponents/football6.png',
+        ];
+        
+        var images= [
+            'assets/opponents/football1.png',
+            'assets/opponents/football2.png',
+            'assets/opponents/football3.png',
+            'assets/opponents/football4.png',
+            'assets/opponents/football5.png',
+            'assets/opponents/football6.png',
+            'assets/opponents/football6.png',
+        ];
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var game_type=urlParams.get('type');
+        console.log(game_type);
+
+        if (game_type=="beach"){
+            images= images_beach;
+            background=back_beach;
+            console.log("this is beach");
+
+        } else {
+            images= images_football;
+            background= back_football;
+        }
+
+
         // this.game.load.image('forest-front', 'assets/beach-background.jpeg');
-        this.game.load.image('forest-front', 'assets/opponents/field.jpg');
+        this.game.load.image('forest-front', background);
 
 
-/*
-        this.game.load.image('girl_1', 'assets/opponents/girls_1.png');
-        this.game.load.image('girl_2', 'assets/opponents/girls_2.png');
-        this.game.load.image('girl_3', 'assets/opponents/girls_3.png');
-        this.game.load.image('girl_4', 'assets/opponents/girls_4.png');
-        this.game.load.image('men_1', 'assets/opponents/men_1.png');
-        this.game.load.image('men_2', 'assets/opponents/men_2.png');
-        this.game.load.image('men_3', 'assets/opponents/men_3.png');
-*/
-
-        this.game.load.image('girl_1', 'assets/opponents/football1.png');
-        this.game.load.image('girl_2', 'assets/opponents/football2.png');
-        this.game.load.image('girl_3', 'assets/opponents/football3.png');
-        this.game.load.image('girl_4', 'assets/opponents/football4.png');
-        this.game.load.image('men_1', 'assets/opponents/football5.png');
-        this.game.load.image('men_2', 'assets/opponents/football6.png');
-        this.game.load.image('men_3', 'assets/opponents/football6.png');
-
+        this.game.load.image('girl_1', images[0]);
+        this.game.load.image('girl_2', images[1]);
+        this.game.load.image('girl_3', images[2]);
+        this.game.load.image('girl_4', images[3]);
+        this.game.load.image('men_1', images[4]);
+        this.game.load.image('men_2', images[5]);
+        this.game.load.image('men_3', images[6]);
 
         this.game.load.image('gold_coin', 'assets/496_RPG_icons/I_GoldCoin.png');
         this.game.load.image('dagger', 'assets/496_RPG_icons/W_Dagger002.png');
@@ -327,7 +366,7 @@ game.state.add('play', {
     onInputUp:function(monster,pointer){
        this.currentMonster.rotation = 0; 
        this.currentMonster.scale.setTo(1,1);
-       monsterTween.resume();
+       //monsterTween.resume();
 
     },
     onClickMonster: function(monster, pointer) {
