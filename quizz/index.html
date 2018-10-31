@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Quiz application</title>
+    <link rel="stylesheet" href="js/App.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Load our React component. -->
+
+<script type="text/babel">
+
+const questionData = [
+  {title: "What is the capital of Italy?", type: "radio"},
+  {title: "Which city is called finance capital of Italy?", type: "radio"},
+  {title: "Which province is known for its Mafia?", type: "radio"},
+  {title: "Which building is located in Rome?", type: "images"},
+  {title: 'Which city is called "Floating city"?', type: "radio"}
+];
+const questionVariants = [
+  [{title: "Berlin", value: "berlin"}, {title: "Moscow", value: "moscow"}, {title: "Rome", value: "rome"}],
+  [{title: "Naples", value: "naples"}, {title: "Milan", value: "milan"}, {title: "Rome", value: "rome"}],
+  [{title: "Lombardy", value: "lombardy"}, {title: "Tuscany", value: "tuscany"}, {title: "Sicily", value: "sicilia"}],
+  [{src: "https://cdn.pixabay.com/photo/2015/03/26/09/49/colosseum-690384_960_720.jpg", value: "col"},
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Milan_Cathedral_from_Piazza_del_Duomo.jpg/798px-Milan_Cathedral_from_Piazza_del_Duomo.jpg",
+      value: "duomo"
+    },
+    {
+      src: "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/3092/SITours/billets-coupe-file-d-me-de-florence-avec-ascension-au-d-me-de-in-florence-118479.jpg",
+      value: "p"
+    },
+    {src: "https://www.planetware.com/photos-large/I/italy-siena-duomo-and-visitors.jpg", value: "s"},
+  ],
+  [{title: "Palermo", value: "palermo"}, {title: "Genoa", value: "genoa"}, {title: "Venice", value: "venice"}],
+];
+const correctAnswers = [2, 1, 2, 0, 2];
+const headerData = {};
+const timeToAnswer = 20;
+const questionsTotal = 5;
+const success_sound = "success2.mp3";
+const error_sound = "error.wav";
+
+
+class NavBar extends React.Component {
+  render() {
+    return (
+      <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        <a className="navbar-brand" href="/">Quizz</a>
+        <div className="collapse navbar-collapse" id="navbarCollapse">
+        </div>
+      </nav>
+    );
+  }
+
+}
+
+
+
+class QuizForm extends React.Component {
+
+  render() {
+    if (this.props.data.type === "images") {
+      return (
+        <main role="main" className="container">
+          <div className="jumbotron">
+            <h2>Images question {this.props.data.title}</h2>
+            <h4>Time left: {this.props.timeLeft}</h4>
+
+            {this.props.variants.map((item, i) =>
+              <span key={i}>
+                  <img src={item.src} className="img-fluid rounded mx-auto Image-question" alt="..." key={i}
+                       value={item.value}
+                       onClick={() => this.props.handleAnswerClick(i)}/>
+
+                </span>
+            )}
+          </div>
+        </main>
+      );
+
+    } else {
+      return (
+        <main role="main" className="container">
+          <div className="">
+            <h2>{this.props.data.title}</h2>
+            <h4>Time left: {this.props.timeLeft}</h4>
+
+            <form>
+              {this.props.variants.map((item, i) =>
+                <div className="quiz-Item" key={i}>
+                  <button type="button" key={i} value={item.value}
+                          onClick={() => this.props.handleAnswerClick(i)}
+                          className={
+                            item.answered ? 'btn btn-block ' + item.answered : 'btn btn-block btn-info'
+
+                          }>{item.title} {item.answered}</button>
+                </div>
+              )}
+            </form>
+          </div>
+        </main>
+      );
+    }
+  }
+}
+
+
+class GameOver extends React.Component {
+
+  render() {
+    return (
+      <main role="main" className="container">
+        <div className="">
+          <h2>Game Over</h2>
+          <h3>Correct answers {this.props.correctAnswers} </h3>
+        </div>
+      </main>
+    );
+  }
+}
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      questionsTotal: questionsTotal,
+      index: 0,
+      result: Array(questionsTotal).fill(null),
+      currentQuestion: questionData[0],
+      questionVariants: questionVariants[0],
+      questionAnswered: false,
+      correctAnswers: 0,
+      gameOver: false,
+
+    };
+    this.handleAnswerClick = this.handleAnswerClick.bind(this);
+    this.stop = this.stop.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.countdown = this.countdown.bind(this);
+    this.gameOver = this.gameOver.bind(this);
+
+  }
+
+  handleAnswerClick(i) {
+    if (this.state.questionAnswered) {
+      return;
+    }
+    let questionProps = this.state.questionVariants.slice();
+    if (i === correctAnswers[this.state.index]) {
+      questionProps[i].answered = "btn-success";
+      this.setState({correctAnswers: this.state.correctAnswers + 1});
+      this.playSound(success_sound);
+      // this.playSound(error_sound);
+    } else {
+      questionProps[i].answered = "btn-danger";
+      this.playSound(error_sound);
+    }
+    this.setState({questionAnswered: true});
+    this.setState({questionVariants: questionProps});
+    this.questionResult();
+  }
+
+  questionResult() {
+    var t = setInterval(() => {
+      this.nextQuestion();
+      clearInterval(t);
+    }, 500);
+
+  }
+
+  gameOver() {
+    this.stop();
+    this.setState({gameOver: true});
+
+  }
+
+  nextQuestion() {
+    const nextIndex = this.state.index + 1;
+
+    if (nextIndex >= this.state.questionsTotal) {
+      this.gameOver();
+      return;
+    }
+    this.setState({index: nextIndex});
+    this.setState({currentQuestion: questionData[nextIndex]});
+    this.setState({questionVariants: questionVariants[nextIndex]});
+    this.setState({questionAnswered: false});
+  }
+
+  componentDidMount() {
+    this.setState({timeLeft: timeToAnswer});
+    this.countdown();
+  }
+
+  countdown() {
+    this.interval = setInterval(() => {
+      const remaining = this.state.timeLeft - 1;
+      //TODO: refactor
+      if (remaining === 0) {
+        this.gameOver();
+      }
+      this.setState({timeLeft: remaining});
+      remaining > 0 ? this.setState({timeLeft: remaining}) : this.gameOver();
+    }, 1000);
+  }
+
+  playSound(source) {
+    const audio = new Audio(source);
+    audio.play();
+  }
+
+  stop() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    if (this.state.gameOver) {
+      return (
+        <div className="">
+          <NavBar data={headerData}/>
+          <GameOver correctAnswers={this.state.correctAnswers}/>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <NavBar data={headerData}/>
+          <QuizForm data={this.state.currentQuestion} timeLeft={this.state.timeLeft}
+                    variants={this.state.questionVariants} handleAnswerClick={this.handleAnswerClick}/>
+        </div>
+      );
+    }
+
+  }
+}
+
+
+
+ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+);
+</script>
+
+
+</head>
+<body  class="play-Field">
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
+<div id="root"></div>
+
+
+
+
+</body>
+</html>
